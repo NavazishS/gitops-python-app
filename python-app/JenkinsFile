@@ -11,30 +11,20 @@ pipeline {
   }
   stages {
     stage('Build and Test') {
-            steps {
-                script {
-                    // Build the project and create a Docker container for the web service
-                    def containerId = sh(script: '''
-                        cd python-app
-                        docker build -t my-python-web-service .
-                        CONTAINER_ID=$(docker run -d -p 8081:80 my-python-web-service)
-                        echo $CONTAINER_ID
-                    ''', returnStdout: true).trim()
-
-                    // Wait for the web service to start (adjust sleep time as needed)
-                    sleep time: 10, unit: 'SECONDS'
-
-                    // Capture the output of the web service
-                    def serviceOutput = sh(script: "docker logs $containerId", returnStdout: true).trim()
-
-                    // Stop the container
-                    sh "docker stop $containerId"
-
-                    // Print the captured output in the pipeline console
-                    echo "Web Service Output:\n${serviceOutput}"
-                }
-            }
-        }
+      steps {
+        sh 'ls -ltr'
+        // build the project and create a JAR file
+        // sh 'cd python-app && docker build -t my-python-web-service . && docker run -p 80:80 my-python-web-service && curl http://localhost:80/ '
+		sh '''
+            cd python-app
+            docker build -t my-python-web-service .
+            CONTAINER_ID=$(docker run -d -p 8081:80 my-python-web-service)
+            sleep 10  # Wait for the web service to start
+            curl http://localhost:8081/
+            docker stop $CONTAINER_ID
+        '''
+      }
+    }
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
