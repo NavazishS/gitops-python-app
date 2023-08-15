@@ -13,6 +13,7 @@ pipeline {
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
+        sh 'apt-get update && apt-get install -y curl'
         // build the project and create a JAR file
         sh '''
             cd python-app
