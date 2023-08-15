@@ -17,7 +17,7 @@ pipeline {
                     def containerId = sh(script: '''
                         cd python-app
                         docker build -t my-python-web-service .
-                        CONTAINER_ID=$(docker run -d -p 80:80 my-python-web-service)
+                        CONTAINER_ID=$(docker run -d -p 8081:80 my-python-web-service)
                         echo $CONTAINER_ID
                     ''', returnStdout: true).trim()
 
