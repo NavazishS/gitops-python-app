@@ -49,6 +49,8 @@ pipeline {
         steps {
             withCredentials([string(credentialsId: 'jenkins-github', variable: 'GITHUB_TOKEN')]) {
                 sh """
+                    git config user.email "mailmenaw@gmail.com"
+                    git config user.name "NawazishS"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     sed -i "s|image: nawdocker/python:[^[:space:]]*|image: nawdocker/python:3.9-slim-${BUILD_NUMBER}|g" python-app-manifests/deployment.yml
                     git add python-app-manifests/deployment.yml
