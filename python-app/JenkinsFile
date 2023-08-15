@@ -13,14 +13,13 @@ pipeline {
     stage('Build and Test') {
       steps {
         sh 'ls -ltr'
-        sh 'apt-get update && apt-get install -y curl'
         // build the project and create a JAR file
         sh '''
             cd python-app
             docker build -t my-python-web-service .
             CONTAINER_ID=$(docker run -d -p 80:80 my-python-web-service)
             sleep 10  # Wait for the web service to start
-            curl http://localhost:80/
+            wget -qO- http://localhost:80/
             docker stop $CONTAINER_ID
         '''
       }
