@@ -10,6 +10,7 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 #RUN apt install python3-pip
 RUN pip install Flask
+RUN apt-get -y install curl
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
