@@ -17,9 +17,9 @@ pipeline {
         sh '''
             cd python-app
             docker build -t my-python-web-service .
-            CONTAINER_ID=$(docker run -d -p 80:80 my-python-web-service)
+            CONTAINER_ID=$(docker run -d -p 8100:80 my-python-web-service)
             sleep 10  # Wait for the web service to start
-            wget -qO- http://localhost:80/
+            wget -qO- http://localhost:8100/
             docker stop $CONTAINER_ID
         '''
       }
