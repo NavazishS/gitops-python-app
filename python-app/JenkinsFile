@@ -20,7 +20,7 @@ pipeline {
             docker build -t my-python-web-service .
             CONTAINER_ID=$(docker run -d -p 8081:80 my-python-web-service)
             sleep 10  # Wait for the web service to start
-            CURL_OUTPUT=$(curl -s http://15.206.128.209:8081)
+            CURL_OUTPUT=$(curl -s http://http://13.232.56.252:8081)
             echo "Curl Output: $CURL_OUTPUT"
             docker stop $CONTAINER_ID
         '''
