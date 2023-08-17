@@ -26,6 +26,16 @@ pipeline {
         '''
       }
     }
+    stage('Static Code Analysis') {
+    environment {
+        SONAR_URL = "http://13.233.122.113:9000"
+    }
+    steps {
+        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+            sh 'cd python-app && sonar-scanner -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+        }
+    }
+   }
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
