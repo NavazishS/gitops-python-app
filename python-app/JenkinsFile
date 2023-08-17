@@ -35,7 +35,7 @@ pipeline {
             dir('python-app') {
                 sh '''
                     curl -LsS https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip > sonar-scanner-cli.zip
-                    unzip sonar-scanner-cli.zip
+                    tar -xf sonar-scanner-cli.zip
                     chmod +x sonar-scanner-cli-5.0.1.3006-linux/bin/sonar-scanner
                     sonar-scanner-cli-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}
                 '''
