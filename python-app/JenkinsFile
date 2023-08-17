@@ -24,6 +24,7 @@ pipeline {
             echo "Curl Output: $CURL_OUTPUT"
             docker stop $CONTAINER_ID
         '''
+        cleanWs() // Clean the workspace
       }
     }
     stage('Build and Push Docker Image') {
