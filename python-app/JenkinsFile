@@ -11,6 +11,9 @@ pipeline {
   }
    environment {
         DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+        GIT_REPO_NAME = "gitops-python-app"
+        GIT_USER_NAME = "NavazishS"
         // Global variables ...
     }
   stages {
@@ -33,7 +36,7 @@ pipeline {
     stage('Build and Push Docker Image') {
       environment {
         // DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
+        // REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
         script {
@@ -47,8 +50,8 @@ pipeline {
     }
     stage('Update Deployment File') {
         environment {
-            GIT_REPO_NAME = "gitops-python-app"
-            GIT_USER_NAME = "NavazishS"
+            // GIT_REPO_NAME = "gitops-python-app"
+            // GIT_USER_NAME = "NavazishS"
         }
         steps {
             withCredentials([string(credentialsId: 'jenkins-github', variable: 'GITHUB_TOKEN')]) {
@@ -60,7 +63,7 @@ pipeline {
                     git config user.name "NawazishS"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     echo "Image reading from Deploy stage: $DOCKER_IMAGE"
-                    sed -i "s|image: nawdocker/python:[^[:space:]]*|image: nawdocker/python:3.9-slim-${BUILD_NUMBER}|g" python-app-manifests/deployment.yml
+                    sed -i "s|image: nawdocker/python:[^[:space:]]*|image: $DOCKER_IMAGE|g" python-app-manifests/deployment.yml
                     git add python-app-manifests/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
