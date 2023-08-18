@@ -26,24 +26,6 @@ pipeline {
         '''
       }
     }
-    stage('Static Code Analysis') {
-    environment {
-        SONAR_URL = "http://13.233.122.113:9000"
-    }
-    steps {
-        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-            dir('python-app') {
-                sh '''
-                    curl -LsS https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip > sonar-scanner-cli.zip
-                    apk update && apk add unzip
-                    unzip -o sonar-scanner-cli.zip
-                    chmod +x sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner
-                    sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}
-                '''
-            }
-        }
-    }
-}
     stage('Build and Push Docker Image') {
       environment {
         DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
