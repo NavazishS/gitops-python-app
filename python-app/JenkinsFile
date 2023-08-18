@@ -34,10 +34,10 @@ pipeline {
       }
     }
     stage('Build and Push Docker Image') {
-      environment {
+      // environment {
         // DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
         // REGISTRY_CREDENTIALS = credentials('docker-cred')
-      }
+      // }
       steps {
         script {
             sh 'cd python-app && docker build -t ${DOCKER_IMAGE} .'
@@ -49,10 +49,10 @@ pipeline {
       }
     }
     stage('Update Deployment File') {
-        environment {
+        // environment {
             // GIT_REPO_NAME = "gitops-python-app"
             // GIT_USER_NAME = "NavazishS"
-        }
+        // }
         steps {
             withCredentials([string(credentialsId: 'jenkins-github', variable: 'GITHUB_TOKEN')]) {
                 sh """
