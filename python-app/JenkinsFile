@@ -9,6 +9,10 @@ pipeline {
       // args '-v $HOME/.m2:/root/.m2'
     }
   }
+   environment {
+        DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
+        // Global variables ...
+    }
   stages {
     stage('Build and Test') {
       steps {
@@ -28,7 +32,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
+        // DOCKER_IMAGE = "nawdocker/python:3.9-slim-${BUILD_NUMBER}"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
