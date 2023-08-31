@@ -10,7 +10,8 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 #RUN apt install python3-pip
 RUN pip install Flask
-
+RUN export HOST_IP=$(hostname -i)
+ENV HOST_IP=$HOST_IP
 # Make port 80 available to the world outside this container
 EXPOSE 80
 
